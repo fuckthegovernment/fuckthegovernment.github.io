@@ -1,3 +1,256 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Exercise Regimen</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <style>
+    :root {
+      --bg: #050509;
+      --bg-elevated: #0b0b13;
+      --border-subtle: #262738;
+      --text: #f7f7ff;
+      --text-muted: #a0a3c3;
+      --accent: #4f46e5;
+      --radius-lg: 1rem;
+      --radius-md: 0.75rem;
+      --shadow-soft: 0 18px 45px rgba(0, 0, 0, 0.55);
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "SF Pro Text",
+        "Segoe UI", sans-serif;
+      background: radial-gradient(circle at top, #111122 0, #050509 55%, #020205 100%);
+      color: var(--text);
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* Outer page padding */
+    .page-shell {
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .page-main {
+      flex: 1;
+      padding: 1rem 0.75rem 6.5rem;
+    }
+
+    @media (min-width: 640px) {
+      .page-main {
+        padding: 1.5rem 1rem 7rem;
+      }
+    }
+
+    .content-shell {
+      max-width: 760px;
+      margin: 0 auto;
+    }
+
+    /* Make the big container look like a card and center it */
+    .erp-sidecar\:h-fit {
+      max-width: 760px;
+      margin-inline: auto;
+    }
+
+    .erp-sidecar\:h-fit > .relative {
+      background: linear-gradient(145deg, #0b0b13, #050509);
+      border-radius: 1.5rem;
+      border: 1px solid rgba(120, 122, 180, 0.18);
+      box-shadow: var(--shadow-soft);
+      overflow: hidden;
+    }
+
+    /* Constrain prose width and add breathing room */
+    .isolate.mx-auto.max-w-threadContentWidth,
+    .mx-auto.max-w-threadContentWidth {
+      max-width: 720px;
+      margin-inline: auto;
+    }
+
+    .pt-\[var\(--thread-visual-spacing\)\],
+    .pb-\[var\(--thread-visual-spacing\)\] {
+      padding-inline: 1.25rem;
+    }
+
+    @media (min-width: 640px) {
+      .pt-\[var\(--thread-visual-spacing\)\],
+      .pb-\[var\(--thread-visual-spacing\)\] {
+        padding-inline: 2rem;
+      }
+    }
+
+    /* Typography overrides for better legibility on mobile */
+    #markdown-content-0 {
+      font-size: clamp(0.92rem, 0.86rem + 0.25vw, 1rem);
+      line-height: 1.6;
+    }
+
+    #markdown-content-0 h1 {
+      font-family: system-ui, -apple-system, BlinkMacSystemFont,
+        "SF Pro Display", "Segoe UI", sans-serif;
+      font-weight: 650;
+      letter-spacing: 0.01em;
+      line-height: 1.2;
+      font-size: clamp(1.35rem, 1.15rem + 1vw, 1.8rem);
+      margin-top: 0.5rem;
+    }
+
+    #markdown-content-0 h2 {
+      font-family: system-ui, -apple-system, BlinkMacSystemFont,
+        "SF Pro Display", "Segoe UI", sans-serif;
+      font-weight: 600;
+      font-size: clamp(1.05rem, 0.98rem + 0.4vw, 1.25rem);
+    }
+
+    #markdown-content-0 h3 {
+      font-weight: 600;
+      font-size: 0.98rem;
+    }
+
+    #markdown-content-0 p {
+      margin-block: 0.5rem;
+    }
+
+    #markdown-content-0 em {
+      color: var(--text-muted);
+    }
+
+    #markdown-content-0 ul,
+    #markdown-content-0 ol {
+      padding-left: 1.3rem;
+      margin-block: 0.4rem 0.8rem;
+    }
+
+    #markdown-content-0 li {
+      margin-block: 0.12rem;
+    }
+
+    #markdown-content-0 hr {
+      border: 0;
+      height: 1px;
+      margin: 1.8rem 0 1.2rem;
+      background: linear-gradient(
+        90deg,
+        transparent,
+        rgba(120, 122, 180, 0.55),
+        transparent
+      );
+    }
+
+    /* Responsive iframes: use aspect-ratio where supported */
+    #markdown-content-0 iframe {
+      width: 100% !important;
+      max-width: 100%;
+      border: 0;
+      display: block;
+      margin-block: 0.9rem 1.2rem;
+      border-radius: 0.75rem;
+      background: #000;
+    }
+
+    @supports (aspect-ratio: 16 / 9) {
+      #markdown-content-0 iframe {
+        aspect-ratio: 16 / 9;
+        height: auto !important;
+      }
+    }
+
+    @supports not (aspect-ratio: 16 / 9) {
+      #markdown-content-0 iframe {
+        height: auto;
+      }
+    }
+
+    /* Bottom composer: make it sticky, full-width on mobile */
+    .erp-sidecar\:fixed.erp-sidecar\:w-full {
+      position: sticky;
+      inset-inline: 0;
+      bottom: 0;
+      padding-inline: 0.75rem;
+      padding-bottom: 1rem;
+      pointer-events: none;
+      background: linear-gradient(
+        to top,
+        rgba(2, 3, 15, 0.96),
+        rgba(2, 3, 12, 0.86),
+        transparent
+      );
+      backdrop-filter: blur(20px);
+    }
+
+    @media (min-width: 640px) {
+      .erp-sidecar\:fixed.erp-sidecar\:w-full {
+        padding-inline: 1rem;
+        padding-bottom: 1.25rem;
+      }
+    }
+
+    .erp-sidecar\:fixed.erp-sidecar\:w-full .max-w-threadContentWidth {
+      max-width: 760px;
+      margin-inline: auto;
+    }
+
+    .erp-sidecar\:fixed.erp-sidecar\:w-full .bg-base.shadow-\[0_1px_8px_2px_oklch\(var\(--foreground-color\)\/0\.1\)\,0_36px_16px_36px_oklch\(var\(--background-base-color\)\)\].dark\:shadow-\[0_4px_12px_rgba\(0\,0\,0\,0\.12\)\,0_32px_16px_36px_oklch\(var\(--dark-background-base-color\)\)\] {
+      border-radius: 999px;
+      border: 1px solid rgba(120, 122, 180, 0.45);
+      background: rgba(7, 9, 24, 0.96);
+      box-shadow: 0 10px 28px rgba(0, 0, 0, 0.65);
+    }
+
+    .erp-sidecar\:fixed.erp-sidecar\:w-full .bg-raised.w-full.outline-none.flex.items-center.border.rounded-2xl.dark\:bg-offset.duration-75.transition-all.border-subtler.shadow-sm.dark\:shadow-md.shadow-super\/10.dark\:shadow-black\/10.px-0.pt-3.pb-3.gap-y-md.grid.items-center {
+      border-radius: 999px;
+    }
+
+    /* Limit height of contenteditable on small screens */
+    #ask-input {
+      max-height: 32vh;
+      overflow-y: auto;
+      font-size: 0.95rem;
+    }
+
+    #ask-input:empty:before {
+      content: "Ask a follow-up...";
+      color: #676a88;
+      pointer-events: none;
+      display: block;
+    }
+
+    /* Make whole layout scroll vertically without sideways scroll */
+    .erp-sidecar\:min-h-\[var\(--sidecar-content-height\)\],
+    .erp-mobile-sidecar\:min-h-\[var\(--mobile-sidecar-content-height\)\],
+    .min-h-\[var\(--page-content-height\)\] {
+      min-height: auto;
+    }
+
+    .mx-auto,
+    .max-w-threadContentWidth {
+      width: 100%;
+    }
+
+    /* Ensure wide utility classes don't force horizontal scrolling */
+    [class*="max-w-threadContentWidth"] {
+      max-width: 760px;
+    }
+
+    iframe {
+      max-width: 100%;
+    }
+  </style>
+</head>
+<body>
+  <div class="page-shell">
+    <main class="page-main">
+      <div class="content-shell">
+
 <div class="erp-sidecar:h-fit erp-sidecar:pb-0 mx-auto h-full">
 <div class="relative border-subtlest ring-subtlest divide-subtlest bg-base">
 <div>
@@ -60,8 +313,7 @@
 <p class="my-2 [&amp;+p]:mt-4 [&amp;_strong:has(+br)]:inline-block [&amp;_strong:has(+br)]:pb-2">Actively squeeze glute of back leg to enhance stretch and activate posterior chain</p>
 </li>
 </ul>
-  <iframe width="1840" height="1035" src="https://www.youtube.com/embed/34SlL-PPCWQ" title="Kneeling Hip Flexor Stretch" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
-<hr class="bg-subtle h-px border-0" />
+<iframe title="Kneeling Hip Flexor Stretch" src="https://www.youtube.com/embed/34SlL-PPCWQ" width="1840" height="1035" frameborder="0" allowfullscreen="allowfullscreen"></iframe><hr class="bg-subtle h-px border-0" />
 <h2 class="mb-2 mt-4 font-display font-semimedium text-base first:mt-0">Phase 2: Primary Strength Movements (20-25 minutes)</h2>
 <p class="my-2 [&amp;+p]:mt-4 [&amp;_strong:has(+br)]:inline-block [&amp;_strong:has(+br)]:pb-2">These exercises provide the highest neuromuscular and structural impact.</p>
 <p class="my-2 [&amp;+p]:mt-4 [&amp;_strong:has(+br)]:inline-block [&amp;_strong:has(+br)]:pb-2"><strong>1. Romanian Deadlift (RDL) - The Cornerstone</strong><br /><em>Evidence: Elicits highest lower back muscle activation; proven to improve pain and disability when performed with neutral spine.</em></p>
@@ -79,6 +331,7 @@
 <p class="my-2 [&amp;+p]:mt-4 [&amp;_strong:has(+br)]:inline-block [&amp;_strong:has(+br)]:pb-2">For scoliosis: Use double-overhand grip to prevent rotational compensation</p>
 </li>
 </ul>
+<iframe title="Romanian Deadlift | Nuffield Health" src="https://www.youtube.com/embed/7j-2w4-P14I" width="1840" height="1035" frameborder="0" allowfullscreen="allowfullscreen"></iframe>
 <p class="my-2 [&amp;+p]:mt-4 [&amp;_strong:has(+br)]:inline-block [&amp;_strong:has(+br)]:pb-2"><strong>2. Goblet Squat</strong><br /><em>Evidence: Teaches proper squat pattern with reduced spinal loading compared to barbell squats; effective for movement pattern retraining.</em></p>
 <ul class="marker:text-quiet list-disc">
 <li class="py-0 my-0 prose-p:pt-0 prose-p:mb-2 prose-p:my-0 [&amp;&gt;p]:pt-0 [&amp;&gt;p]:mb-2 [&amp;&gt;p]:my-0">
@@ -94,6 +347,7 @@
 <p class="my-2 [&amp;+p]:mt-4 [&amp;_strong:has(+br)]:inline-block [&amp;_strong:has(+br)]:pb-2">Progression: Transition to front squat after 4 weeks of perfect form</p>
 </li>
 </ul>
+<iframe title="📌HOW TO DO A GOBLET SQUAT" src="https://www.youtube.com/embed/lRYBbchqxtI" width="685" height="1217" frameborder="0" allowfullscreen="allowfullscreen"></iframe>
 <p class="my-2 [&amp;+p]:mt-4 [&amp;_strong:has(+br)]:inline-block [&amp;_strong:has(+br)]:pb-2"><strong>3. Single-Leg Glute Bridge</strong><br /><em>Evidence: Corrects gluteal amnesia and asymmetrical loading patterns common in scoliosis.</em></p>
 <ul class="marker:text-quiet list-disc">
 <li class="py-0 my-0 prose-p:pt-0 prose-p:mb-2 prose-p:my-0 [&amp;&gt;p]:pt-0 [&amp;&gt;p]:mb-2 [&amp;&gt;p]:my-0">
@@ -106,7 +360,7 @@
 <p class="my-2 [&amp;+p]:mt-4 [&amp;_strong:has(+br)]:inline-block [&amp;_strong:has(+br)]:pb-2">Place foam roller between knees to prevent adductor compensation</p>
 </li>
 </ul>
-<hr class="bg-subtle h-px border-0" />
+<iframe title="Single Leg Glute Bridge" src="https://www.youtube.com/embed/3NXv0Nany-Q" width="1840" height="1035" frameborder="0" allowfullscreen="allowfullscreen"></iframe><hr class="bg-subtle h-px border-0" />
 <h2 class="mb-2 mt-4 font-display font-semimedium text-base first:mt-0">Phase 3: Core Stability &amp; Scoliosis-Specific Control (15 minutes)</h2>
 <p class="my-2 [&amp;+p]:mt-4 [&amp;_strong:has(+br)]:inline-block [&amp;_strong:has(+br)]:pb-2">Addresses both pain and structural asymmetry simultaneously.</p>
 <p class="my-2 [&amp;+p]:mt-4 [&amp;_strong:has(+br)]:inline-block [&amp;_strong:has(+br)]:pb-2"><strong>Bird Dog with 5-Second Hold</strong><br /><em>Evidence: Improves core stability and reduces lumbar strain; superior to general exercise for functional improvement.</em></p>
@@ -124,6 +378,7 @@
 <p class="my-2 [&amp;+p]:mt-4 [&amp;_strong:has(+br)]:inline-block [&amp;_strong:has(+br)]:pb-2">For scoliosis: Focus on reaching longer with the arm on the convex side</p>
 </li>
 </ul>
+<iframe title="Bird Dogs with 5 second hold | Pursuit Physical Therapy" src="https://www.youtube.com/embed/oTV-jJ9iYAk" width="1840" height="1035" frameborder="0" allowfullscreen="allowfullscreen"></iframe>
 <p class="my-2 [&amp;+p]:mt-4 [&amp;_strong:has(+br)]:inline-block [&amp;_strong:has(+br)]:pb-2"><strong>Side Plank (from Knees Initially)</strong><br /><em>Evidence: Anti-rotation stability directly counters rotational forces in scoliosis; more effective than general exercise.</em></p>
 <ul class="marker:text-quiet list-disc">
 <li class="py-0 my-0 prose-p:pt-0 prose-p:mb-2 prose-p:my-0 [&amp;&gt;p]:pt-0 [&amp;&gt;p]:mb-2 [&amp;&gt;p]:my-0">
@@ -136,6 +391,7 @@
 <p class="my-2 [&amp;+p]:mt-4 [&amp;_strong:has(+br)]:inline-block [&amp;_strong:has(+br)]:pb-2">Progression: Extend top leg, then transition to feet</p>
 </li>
 </ul>
+<iframe title="Deska boczna - jak wykonać side plank?" src="https://www.youtube.com/embed/G3Jm3SUJzqI" width="1840" height="1035" frameborder="0" allowfullscreen="allowfullscreen"></iframe>
 <p class="my-2 [&amp;+p]:mt-4 [&amp;_strong:has(+br)]:inline-block [&amp;_strong:has(+br)]:pb-2"><strong>Active Self-Correction (SEAS Method)</strong><br /><em>Evidence: Superior to general exercise for reducing Cobb angles; triggers neuromotor re-education.</em></p>
 <ul class="marker:text-quiet list-disc">
 <li class="py-0 my-0 prose-p:pt-0 prose-p:mb-2 prose-p:my-0 [&amp;&gt;p]:pt-0 [&amp;&gt;p]:mb-2 [&amp;&gt;p]:my-0">
@@ -151,7 +407,7 @@
 <p class="my-2 [&amp;+p]:mt-4 [&amp;_strong:has(+br)]:inline-block [&amp;_strong:has(+br)]:pb-2">Integrate this posture into daily activities (standing, walking)</p>
 </li>
 </ul>
-<hr class="bg-subtle h-px border-0" />
+<iframe title="Scoliosis Self Correction" src="https://www.youtube.com/embed/4IM6rCs8kDs" width="685" height="1217" frameborder="0" allowfullscreen="allowfullscreen"></iframe><hr class="bg-subtle h-px border-0" />
 <h2 class="mb-2 mt-4 font-display font-semimedium text-base first:mt-0">Phase 4: Movement Integration (5 minutes)</h2>
 <p class="my-2 [&amp;+p]:mt-4 [&amp;_strong:has(+br)]:inline-block [&amp;_strong:has(+br)]:pb-2"><strong>Hip Hinge Pattern Practice (Bodyweight)</strong><br /><em>Evidence: Teaches proper hip dissociation, reducing lumbar compensation during daily lifts.</em></p>
 <ul class="marker:text-quiet list-disc">
@@ -165,6 +421,7 @@
 <p class="my-2 [&amp;+p]:mt-4 [&amp;_strong:has(+br)]:inline-block [&amp;_strong:has(+br)]:pb-2">Practice breathing: Inhale on descent, exhale on ascent with abdominal bracing</p>
 </li>
 </ul>
+  <iframe width="1840" height="1035" src="https://www.youtube.com/embed/JLBaBgDwjnQ" title="Mastering the Hip Hinge" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
 <hr class="bg-subtle h-px border-0" />
 <h2 id="critical-implementation-guidelines" class="mb-2 mt-4 font-display font-semimedium text-base first:mt-0 md:text-lg [hr+&amp;]:mt-4">Critical Implementation Guidelines</h2>
 <h2 class="mb-2 mt-4 font-display font-semimedium text-base first:mt-0">Form Non-Negotiables</h2>
@@ -259,6 +516,7 @@
 </div>
 </div>
 </div>
+</div>
 <div class="erp-sidecar:fixed erp-sidecar:w-full bottom-safeAreaInsetBottom p-md pointer-events-none z-10 absolute border-subtlest ring-subtlest divide-subtlest bg-transparent">
 <div class="max-w-threadContentWidth mx-auto">
 <div class="pointer-events-auto">
@@ -287,3 +545,9 @@
 </div>
 </div>
 </div>
+
+      </div>
+    </main>
+  </div>
+</body>
+</html>
